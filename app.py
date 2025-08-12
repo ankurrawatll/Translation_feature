@@ -339,147 +339,225 @@ st.markdown(chips_html, unsafe_allow_html=True)
 # ---------------- EXERCISE CONTENT SECTION ---------------- #
 st.markdown("## 📚 SpeakGenie English Learning Exercises")
 
+# Initialize session state for exercise tracking
+if "exercise_scores" not in st.session_state:
+    st.session_state.exercise_scores = {"lesson1": 0, "lesson2": 0}
+if "current_lesson" not in st.session_state:
+    st.session_state.current_lesson = "lesson1"
+
+# Lesson Navigation Tabs
+lesson_tab1, lesson_tab2, progress_tab = st.tabs(["👋 Lesson 1: Greetings", "🙋 Lesson 2: Introduction", "📊 Progress"])
+
 # Lesson 1: Greetings and Hello
-st.markdown("### 👋 Lesson 1: Greetings and Hello")
+with lesson_tab1:
+    st.markdown("### 👋 Lesson 1: Greetings and Hello")
+    
+    # Welcome Section with Interactive Button
+    with st.container():
+        st.markdown("**🌟 Welcome to SpeakGenie!**")
+        col1, col2 = st.columns([3, 1])
+        with col1:
+            st.markdown("👋 Hi! I'm Genie — your English buddy!")
+            st.markdown("📚 Welcome to SpeakGenie — a fun way to learn English!")
+            st.markdown("🧠 We'll start from the basics: speaking, reading, grammar & more.")
+            st.markdown("🚀 Step by step, you'll get better every day!")
+        with col2:
+            if st.button("🎯 Start Lesson", key="start_lesson1"):
+                st.session_state.current_lesson = "lesson1"
+                st.success("Lesson 1 started! Let's begin learning greetings!")
 
-with st.container():
-    st.markdown("**🌟 Welcome to SpeakGenie!**")
-    st.markdown("👋 Hi! I'm Genie — your English buddy!")
-    st.markdown("📚 Welcome to SpeakGenie — a fun way to learn English!")
-    st.markdown("🧠 We'll start from the basics: speaking, reading, grammar & more.")
-    st.markdown("🚀 Step by step, you'll get better every day!")
-    st.markdown("🎉 Ready to begin? Let's go!")
+    # Learning Section
+    with st.expander("🔤 Learn Greetings", expanded=True):
+        st.markdown("**👋 Let's Learn to Say Hello!**")
+        st.markdown("We say 'Hello', 'Hi', 'Good morning' when we meet someone. It's polite and friendly!")
+        
+        # Interactive greeting buttons
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            if st.button("👋 Hello", key="hello_btn"):
+                st.info("Hello! How are you today?")
+        with col2:
+            if st.button("🌅 Good Morning", key="morning_btn"):
+                st.info("Good morning! Have a wonderful day!")
+        with col3:
+            if st.button("👋 Hi", key="hi_btn"):
+                st.info("Hi there! Nice to meet you!")
 
-with st.container():
-    st.markdown("**👋 Let's Learn to Say Hello!**")
-    st.markdown("We say 'Hello', 'Hi', 'Good morning' when we meet someone. It's polite and friendly!")
+    # Practice Section
+    with st.expander("🎯 Practice Exercises", expanded=True):
+        st.markdown("**🔠 Build the Greeting!**")
+        st.markdown("👉 Sentence: Good morning, teacher.")
+        st.markdown("Words: Good / morning / teacher")
+        
+        # Word building exercise
+        st.markdown("**Build your own greeting:**")
+        greeting_parts = st.multiselect(
+            "Choose greeting parts:",
+            ["Good", "Morning", "Hello", "Hi", "Afternoon", "Evening", "Night"],
+            default=["Good", "Morning"]
+        )
+        if greeting_parts:
+            st.success(f"Your greeting: {' '.join(greeting_parts)}!")
 
-with st.container():
-    st.markdown("**🔠 Build the Greeting!**")
-    st.markdown("👉 Sentence: Good morning, teacher.")
-    st.markdown("Words: Good / morning / teacher")
+    # MCQ Section 1
+    with st.expander("🧠 MCQ Quiz 1: Spot the Right Greeting", expanded=True):
+        st.markdown("**Question 1:** Which picture shows two people shaking hands?")
+        
+        # Radio button for MCQ
+        answer1 = st.radio(
+            "Select the correct answer:",
+            ["A. Waving goodbye", "B. Shaking hands ✅", "C. Sleeping", "D. Eating food"],
+            key="mcq1"
+        )
+        
+        if st.button("Submit Answer 1", key="submit1"):
+            if answer1 == "B. Shaking hands ✅":
+                st.session_state.exercise_scores["lesson1"] += 1
+                st.success("🎉 Correct! Shaking hands is a friendly greeting!")
+            else:
+                st.error("❌ Try again! Think about what people do when they meet.")
 
-with st.container():
-    st.markdown("**🗣 Speak It Like You Mean It!**")
-    st.markdown("🎤 Hello, how are you?")
+    # MCQ Section 2
+    with st.expander("🧠 MCQ Quiz 2: Complete the Sentence", expanded=True):
+        st.markdown("**Question 2:** I say ______ in the morning.")
+        
+        answer2 = st.radio(
+            "Select the correct answer:",
+            ["A. Good night", "B. Good morning ✅", "C. Bye", "D. Thanks"],
+            key="mcq2"
+        )
+        
+        if st.button("Submit Answer 2", key="submit2"):
+            if answer2 == "B. Good morning ✅":
+                st.session_state.exercise_scores["lesson1"] += 1
+                st.success("🎉 Perfect! 'Good morning' is the right greeting for mornings!")
+            else:
+                st.error("❌ Not quite right. Think about what time of day it is.")
 
-with st.container():
-    st.markdown("**🖼 Spot the Right Greeting**")
-    st.markdown("Which picture shows two people shaking hands?")
-    col1, col2, col3, col4 = st.columns(4)
-    with col1:
-        st.markdown("A. Waving goodbye")
-    with col2:
-        st.markdown("B. Shaking hands ✅")
-    with col3:
-        st.markdown("C. Sleeping")
-    with col4:
-        st.markdown("D. Eating food")
-
-with st.container():
-    st.markdown("**📸 Say the Right Word**")
-    st.markdown("Image: A boy waving his hand")
-    col1, col2, col3, col4 = st.columns(4)
-    with col1:
-        st.markdown("A. Hello ✅")
-    with col2:
-        st.markdown("B. Bye")
-    with col3:
-        st.markdown("C. Sleep")
-    with col4:
-        st.markdown("D. Sit")
-
-with st.container():
-    st.markdown("**📖 Read and Repeat**")
-    st.markdown("Hi! I am Rahul.")
-
-with st.container():
-    st.markdown("**🔗 Match the Greeting**")
-    data = {
-        "Greeting": ["Good morning", "Good night", "Hello", "Bye"],
-        "When to Say It": ["In the morning", "Before sleeping", "When meeting", "When leaving"]
-    }
-    st.table(data)
-
-with st.container():
-    st.markdown("**🧠 Complete the Sentence**")
-    st.markdown("I say ______ in the morning.")
-    col1, col2, col3, col4 = st.columns(4)
-    with col1:
-        st.markdown("A. Good night")
-    with col2:
-        st.markdown("B. Good morning ✅")
-    with col3:
-        st.markdown("C. Bye")
-    with col4:
-        st.markdown("D. Thanks")
+    # Reading Practice
+    with st.expander("📖 Reading Practice", expanded=True):
+        st.markdown("**📖 Read and Repeat**")
+        st.markdown("Hi! I am Rahul.")
+        
+        # Practice button
+        if st.button("🎤 Practice Speaking", key="speak_practice1"):
+            st.info("🎤 Say: 'Hi! I am Rahul.' Practice makes perfect!")
 
 # Lesson 2: Introducing Yourself
-st.markdown("### 🙋 Lesson 2: Introducing Yourself")
+with lesson_tab2:
+    st.markdown("### 🙋 Lesson 2: Introducing Yourself")
+    
+    # Introduction Section
+    with st.expander("🙋 Learn to Introduce Yourself", expanded=True):
+        st.markdown("**🙋 Tell Me About You!**")
+        st.markdown("We use 'My name is...', 'I am...' to introduce ourselves to others.")
+        
+        # Interactive introduction form
+        st.markdown("**Practice your introduction:**")
+        name = st.text_input("What's your name?", placeholder="Enter your name")
+        age = st.number_input("How old are you?", min_value=1, max_value=100, value=25)
+        city = st.text_input("Where do you live?", placeholder="Enter your city")
+        
+        if name and age and city:
+            st.success(f"👋 Hi! My name is {name}. I am {age} years old. I live in {city}.")
 
-with st.container():
-    st.markdown("**🙋 Tell Me About You!**")
-    st.markdown("We use 'My name is...', 'I am...' to introduce ourselves to others.")
+    # MCQ Section 3
+    with st.expander("🧠 MCQ Quiz 3: Pick the Right Introduction", expanded=True):
+        st.markdown("**Question 3:** Which picture shows a girl saying her name?")
+        
+        answer3 = st.radio(
+            "Select the correct answer:",
+            ["A. Writing on board", "B. Sleeping", "C. Saying hello ✅", "D. Running"],
+            key="mcq3"
+        )
+        
+        if st.button("Submit Answer 3", key="submit3"):
+            if answer3 == "C. Saying hello ✅":
+                st.session_state.exercise_scores["lesson2"] += 1
+                st.success("🎉 Excellent! Saying hello is a great way to introduce yourself!")
+            else:
+                st.error("❌ Think about what people do when they first meet.")
 
-with st.container():
-    st.markdown("**🔤 Make Your Introduction**")
-    st.markdown("👉 Sentence: My name is Asha.")
-    st.markdown("Words: My / name / is / Asha")
+    # Fill the Gap Exercise
+    with st.expander("✍️ Fill the Gap Exercise", expanded=True):
+        st.markdown("**Question 4:** My name ______ Tina.")
+        
+        answer4 = st.radio(
+            "Select the correct answer:",
+            ["A. are", "B. is ✅", "C. am", "D. be"],
+            key="mcq4"
+        )
+        
+        if st.button("Submit Answer 4", key="submit4"):
+            if answer4 == "B. is ✅":
+                st.session_state.exercise_scores["lesson2"] += 1
+                st.success("🎉 Perfect! 'My name is Tina' is grammatically correct!")
+            else:
+                st.error("❌ Remember: 'My name is...' uses 'is' not 'are' or 'am'.")
 
-with st.container():
-    st.markdown("**🎙 Speak It Out**")
-    st.markdown("🎤 I am Rahul.")
+    # Matching Exercise
+    with st.expander("🔗 Matching Exercise", expanded=True):
+        st.markdown("**Match the following:**")
+        
+        # Create a matching game
+        col1, col2 = st.columns(2)
+        with col1:
+            st.markdown("**Sentences:**")
+            st.markdown("• I am Tina")
+            st.markdown("• I am 6 years old")
+            st.markdown("• I study in Class 2")
+            st.markdown("• I live in Delhi")
+        
+        with col2:
+            st.markdown("**Types:**")
+            st.markdown("• Name")
+            st.markdown("• Age")
+            st.markdown("• School class")
+            st.markdown("• Location")
+        
+        # Interactive matching
+        st.markdown("**Practice matching:**")
+        sentence_type = st.selectbox(
+            "What type is 'I am Tina'?",
+            ["Select...", "Name", "Age", "School class", "Location"]
+        )
+        if sentence_type == "Name":
+            st.success("🎉 Correct! 'I am Tina' tells us the person's name.")
+        elif sentence_type != "Select...":
+            st.error("❌ Try again! Think about what information 'I am Tina' gives us.")
 
-with st.container():
-    st.markdown("**🖼 Pick the Right Introduction**")
-    st.markdown("Which picture shows a girl saying her name?")
-    col1, col2, col3, col4 = st.columns(4)
-    with col1:
-        st.markdown("A. Writing on board")
-    with col2:
-        st.markdown("B. Sleeping")
-    with col3:
-        st.markdown("C. Saying hello ✅")
-    with col4:
-        st.markdown("D. Running")
-
-with st.container():
-    st.markdown("**Identify the Action**")
-    st.markdown("Image: A boy introducing himself")
-    col1, col2, col3, col4 = st.columns(4)
-    with col1:
-        st.markdown("A. Sorry")
-    with col2:
-        st.markdown("B. Thanks")
-    with col3:
-        st.markdown("C. Hello")
-    with col4:
-        st.markdown("D. Good night")
-
-with st.container():
-    st.markdown("**📖 Let's Read Together**")
-    st.markdown("My name is Seema.")
-
-with st.container():
-    st.markdown("**Match the following**")
-    data2 = {
-        "Sentence": ["I am Tina", "I am 6 years old", "I study in Class 2", "I live in Delhi"],
-        "Type": ["Name", "Age", "School class", "Location"]
-    }
-    st.table(data2)
-
-with st.container():
-    st.markdown("**✍️ Fill the Gap**")
-    st.markdown("My name ______ Tina.")
-    col1, col2, col3, col4 = st.columns(4)
-    with col1:
-        st.markdown("A. are")
-    with col2:
-        st.markdown("B. is ✅")
-    with col3:
-        st.markdown("C. am")
-    with col4:
-        st.markdown("D. be")
+# Progress Tab
+with progress_tab:
+    st.markdown("### 📊 Your Learning Progress")
+    
+    # Progress bars
+    lesson1_score = st.session_state.exercise_scores["lesson1"]
+    lesson2_score = st.session_state.exercise_scores["lesson2"]
+    
+    st.markdown(f"**Lesson 1: Greetings** - Score: {lesson1_score}/2")
+    st.progress(lesson1_score / 2)
+    
+    st.markdown(f"**Lesson 2: Introduction** - Score: {lesson2_score}/2")
+    st.progress(lesson2_score / 2)
+    
+    total_score = lesson1_score + lesson2_score
+    st.markdown(f"**Total Score: {total_score}/4**")
+    
+    # Achievement system
+    if total_score == 4:
+        st.balloons()
+        st.success("🏆 Congratulations! You've completed all exercises perfectly!")
+    elif total_score >= 3:
+        st.success("🌟 Great job! You're doing really well!")
+    elif total_score >= 1:
+        st.info("📚 Keep practicing! You're making progress!")
+    else:
+        st.info("🎯 Ready to start learning? Begin with Lesson 1!")
+    
+    # Reset button
+    if st.button("🔄 Reset Progress", key="reset_progress"):
+        st.session_state.exercise_scores = {"lesson1": 0, "lesson2": 0}
+        st.success("Progress reset! Start fresh with your learning journey!")
 
 st.markdown(
     f"<div id=\"selected_lang_code\" style=\"display:none\">{selected_lang_code}</div>",
