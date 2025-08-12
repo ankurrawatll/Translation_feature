@@ -337,147 +337,149 @@ chips_html = "<div class='chips'>" + "".join([
 st.markdown(chips_html, unsafe_allow_html=True)
 
 # ---------------- EXERCISE CONTENT SECTION ---------------- #
-st.markdown(
-    """
-    <div class='exercise-section'>
-        <div class='exercise-title'>📚 SpeakGenie English Learning Exercises</div>
-        
-        <div class='lesson-card'>
-            <div class='lesson-header'>👋 Lesson 1: Greetings and Hello</div>
-            <div class='exercise-item'>
-                <strong>🌟 Welcome to SpeakGenie!</strong><br>
-                "👋 Hi! I'm Genie — your English buddy!<br>
-                📚 Welcome to SpeakGenie — a fun way to learn English!<br>
-                🧠 We'll start from the basics: speaking, reading, grammar & more.<br>
-                🚀 Step by step, you'll get better every day!<br>
-                🎉 Ready to begin? Let's go!"
-            </div>
-            
-            <div class='exercise-item'>
-                <strong>👋 Let's Learn to Say Hello!</strong><br>
-                "We say 'Hello', 'Hi', 'Good morning' when we meet someone. It's polite and friendly!"
-            </div>
-            
-            <div class='exercise-item'>
-                <strong>🔠 Build the Greeting!</strong><br>
-                👉 Sentence: Good morning, teacher.<br>
-                Words: Good / morning / teacher
-            </div>
-            
-            <div class='exercise-item'>
-                <strong>🗣 Speak It Like You Mean It!</strong><br>
-                🎤 "Hello, how are you?"
-            </div>
-            
-            <div class='exercise-question'>
-                <strong>🖼 Spot the Right Greeting</strong><br>
-                Which picture shows two people shaking hands?<br>
-                A. Waving goodbye<br>
-                B. Shaking hands ✅<br>
-                C. Sleeping<br>
-                D. Eating food
-            </div>
-            
-            <div class='exercise-question'>
-                <strong>📸 Say the Right Word</strong><br>
-                Image: A boy waving his hand<br>
-                A. Hello ✅<br>
-                B. Bye<br>
-                C. Sleep<br>
-                D. Sit
-            </div>
-            
-            <div class='exercise-item'>
-                <strong>📖 Read and Repeat</strong><br>
-                "Hi! I am Rahul."
-            </div>
-            
-            <div class='exercise-item'>
-                <strong>🔗 Match the Greeting</strong><br>
-                <table style='width:100%; border-collapse: collapse;'>
-                    <tr><th style='border:1px solid #ddd; padding:8px;'>Greeting</th><th style='border:1px solid #ddd; padding:8px;'>When to Say It</th></tr>
-                    <tr><td style='border:1px solid #ddd; padding:8px;'>Good morning</td><td style='border:1px solid #ddd; padding:8px;'>In the morning</td></tr>
-                    <tr><td style='border:1px solid #ddd; padding:8px;'>Good night</td><td style='border:1px solid #ddd; padding:8px;'>Before sleeping</td></tr>
-                    <tr><td style='border:1px solid #ddd; padding:8px;'>Hello</td><td style='border:1px solid #ddd; padding:8px;'>When meeting</td></tr>
-                    <tr><td style='border:1px solid #ddd; padding:8px;'>Bye</td><td style='border:1px solid #ddd; padding:8px;'>When leaving</td></tr>
-                </table>
-            </div>
-            
-            <div class='exercise-question'>
-                <strong>🧠 Complete the Sentence</strong><br>
-                "I say ______ in the morning."<br>
-                A. Good night<br>
-                B. Good morning ✅<br>
-                C. Bye<br>
-                D. Thanks
-            </div>
-        </div>
-        
-        <div class='lesson-card'>
-            <div class='lesson-header'>🙋 Lesson 2: Introducing Yourself</div>
-            <div class='exercise-item'>
-                <strong>🙋 Tell Me About You!</strong><br>
-                "We use 'My name is...', 'I am...' to introduce ourselves to others."
-            </div>
-            
-            <div class='exercise-item'>
-                <strong>🔤 Make Your Introduction</strong><br>
-                👉 Sentence: My name is Asha.<br>
-                Words: My / name / is / Asha
-            </div>
-            
-            <div class='exercise-item'>
-                <strong>🎙 Speak It Out</strong><br>
-                🎤 "I am Rahul."
-            </div>
-            
-            <div class='exercise-question'>
-                <strong>🖼 Pick the Right Introduction</strong><br>
-                Which picture shows a girl saying her name?<br>
-                A. Writing on board<br>
-                B. Sleeping<br>
-                C. Saying hello ✅<br>
-                D. Running
-            </div>
-            
-            <div class='exercise-question'>
-                <strong>Identify the Action</strong><br>
-                Image: A boy introducing himself<br>
-                A. Sorry<br>
-                B. Thanks<br>
-                C. Hello<br>
-                D. Good night
-            </div>
-            
-            <div class='exercise-item'>
-                <strong>📖 Let's Read Together</strong><br>
-                "My name is Seema."
-            </div>
-            
-            <div class='exercise-item'>
-                <strong>Match the following</strong><br>
-                <table style='width:100%; border-collapse: collapse;'>
-                    <tr><th style='border:1px solid #ddd; padding:8px;'>Sentence</th><th style='border:1px solid #ddd; padding:8px;'>Type</th></tr>
-                    <tr><td style='border:1px solid #ddd; padding:8px;'>I am Tina</td><td style='border:1px solid #ddd; padding:8px;'>Name</td></tr>
-                    <tr><td style='border:1px solid #ddd; padding:8px;'>I am 6 years old</td><td style='border:1px solid #ddd; padding:8px;'>Age</td></tr>
-                    <tr><td style='border:1px solid #ddd; padding:8px;'>I study in Class 2</td><td style='border:1px solid #ddd; padding:8px;'>School class</td></tr>
-                    <tr><td style='border:1px solid #ddd; padding:8px;'>I live in Delhi</td><td style='border:1px solid #ddd; padding:8px;'>Location</td></tr>
-                </table>
-            </div>
-            
-            <div class='exercise-question'>
-                <strong>✍️ Fill the Gap</strong><br>
-                "My name ______ Tina."<br>
-                A. are<br>
-                B. is ✅<br>
-                C. am<br>
-                D. be
-            </div>
-        </div>
-    </div>
-    """,
-    unsafe_allow_html=True,
-)
+st.markdown("## 📚 SpeakGenie English Learning Exercises")
+
+# Lesson 1: Greetings and Hello
+st.markdown("### 👋 Lesson 1: Greetings and Hello")
+
+with st.container():
+    st.markdown("**🌟 Welcome to SpeakGenie!**")
+    st.markdown("👋 Hi! I'm Genie — your English buddy!")
+    st.markdown("📚 Welcome to SpeakGenie — a fun way to learn English!")
+    st.markdown("🧠 We'll start from the basics: speaking, reading, grammar & more.")
+    st.markdown("🚀 Step by step, you'll get better every day!")
+    st.markdown("🎉 Ready to begin? Let's go!")
+
+with st.container():
+    st.markdown("**👋 Let's Learn to Say Hello!**")
+    st.markdown("We say 'Hello', 'Hi', 'Good morning' when we meet someone. It's polite and friendly!")
+
+with st.container():
+    st.markdown("**🔠 Build the Greeting!**")
+    st.markdown("👉 Sentence: Good morning, teacher.")
+    st.markdown("Words: Good / morning / teacher")
+
+with st.container():
+    st.markdown("**🗣 Speak It Like You Mean It!**")
+    st.markdown("🎤 Hello, how are you?")
+
+with st.container():
+    st.markdown("**🖼 Spot the Right Greeting**")
+    st.markdown("Which picture shows two people shaking hands?")
+    col1, col2, col3, col4 = st.columns(4)
+    with col1:
+        st.markdown("A. Waving goodbye")
+    with col2:
+        st.markdown("B. Shaking hands ✅")
+    with col3:
+        st.markdown("C. Sleeping")
+    with col4:
+        st.markdown("D. Eating food")
+
+with st.container():
+    st.markdown("**📸 Say the Right Word**")
+    st.markdown("Image: A boy waving his hand")
+    col1, col2, col3, col4 = st.columns(4)
+    with col1:
+        st.markdown("A. Hello ✅")
+    with col2:
+        st.markdown("B. Bye")
+    with col3:
+        st.markdown("C. Sleep")
+    with col4:
+        st.markdown("D. Sit")
+
+with st.container():
+    st.markdown("**📖 Read and Repeat**")
+    st.markdown("Hi! I am Rahul.")
+
+with st.container():
+    st.markdown("**🔗 Match the Greeting**")
+    data = {
+        "Greeting": ["Good morning", "Good night", "Hello", "Bye"],
+        "When to Say It": ["In the morning", "Before sleeping", "When meeting", "When leaving"]
+    }
+    st.table(data)
+
+with st.container():
+    st.markdown("**🧠 Complete the Sentence**")
+    st.markdown("I say ______ in the morning.")
+    col1, col2, col3, col4 = st.columns(4)
+    with col1:
+        st.markdown("A. Good night")
+    with col2:
+        st.markdown("B. Good morning ✅")
+    with col3:
+        st.markdown("C. Bye")
+    with col4:
+        st.markdown("D. Thanks")
+
+# Lesson 2: Introducing Yourself
+st.markdown("### 🙋 Lesson 2: Introducing Yourself")
+
+with st.container():
+    st.markdown("**🙋 Tell Me About You!**")
+    st.markdown("We use 'My name is...', 'I am...' to introduce ourselves to others.")
+
+with st.container():
+    st.markdown("**🔤 Make Your Introduction**")
+    st.markdown("👉 Sentence: My name is Asha.")
+    st.markdown("Words: My / name / is / Asha")
+
+with st.container():
+    st.markdown("**🎙 Speak It Out**")
+    st.markdown("🎤 I am Rahul.")
+
+with st.container():
+    st.markdown("**🖼 Pick the Right Introduction**")
+    st.markdown("Which picture shows a girl saying her name?")
+    col1, col2, col3, col4 = st.columns(4)
+    with col1:
+        st.markdown("A. Writing on board")
+    with col2:
+        st.markdown("B. Sleeping")
+    with col3:
+        st.markdown("C. Saying hello ✅")
+    with col4:
+        st.markdown("D. Running")
+
+with st.container():
+    st.markdown("**Identify the Action**")
+    st.markdown("Image: A boy introducing himself")
+    col1, col2, col3, col4 = st.columns(4)
+    with col1:
+        st.markdown("A. Sorry")
+    with col2:
+        st.markdown("B. Thanks")
+    with col3:
+        st.markdown("C. Hello")
+    with col4:
+        st.markdown("D. Good night")
+
+with st.container():
+    st.markdown("**📖 Let's Read Together**")
+    st.markdown("My name is Seema.")
+
+with st.container():
+    st.markdown("**Match the following**")
+    data2 = {
+        "Sentence": ["I am Tina", "I am 6 years old", "I study in Class 2", "I live in Delhi"],
+        "Type": ["Name", "Age", "School class", "Location"]
+    }
+    st.table(data2)
+
+with st.container():
+    st.markdown("**✍️ Fill the Gap**")
+    st.markdown("My name ______ Tina.")
+    col1, col2, col3, col4 = st.columns(4)
+    with col1:
+        st.markdown("A. are")
+    with col2:
+        st.markdown("B. is ✅")
+    with col3:
+        st.markdown("C. am")
+    with col4:
+        st.markdown("D. be")
 
 st.markdown(
     f"<div id=\"selected_lang_code\" style=\"display:none\">{selected_lang_code}</div>",
