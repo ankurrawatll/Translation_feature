@@ -248,10 +248,11 @@ def gemini_chat(prompt):
         return f"Error {response.status_code}: {response.text}"
 
 # Predeclare all exercise phrases to batch-translate in one request
+# Only translate UI instructions, keep English learning content intact
 EXERCISE_STRINGS = [
     "📚 SpeakGenie English Learning Exercises",
     "👋 Lesson 1: Greetings",
-    "🙋 Lesson 2: Introduction",
+    "🙋 Lesson 2: Introduction", 
     "📊 Progress",
     "👋 Lesson 1: Greetings and Hello",
     "🌟 Welcome to SpeakGenie!",
@@ -276,38 +277,22 @@ EXERCISE_STRINGS = [
     "Words: Good / morning / teacher",
     "Build your own greeting:",
     "Choose greeting parts:",
-    "Good",
-    "Morning",
-    "Hello",
-    "Hi",
-    "Afternoon",
-    "Evening",
-    "Night",
     "Your greeting: ",
     "🧠 MCQ Quiz 1: Spot the Right Greeting",
     "Question 1:",
     "Which picture shows two people shaking hands?",
     "Select the correct answer:",
-    "A. Waving goodbye",
-    "B. Shaking hands ✅",
-    "C. Sleeping",
-    "D. Eating food",
     "Submit Answer 1",
     "🎉 Correct! Shaking hands is a friendly greeting!",
     "❌ Try again! Think about what people do when they meet.",
     "🧠 MCQ Quiz 2: Complete the Sentence",
     "Question 2:",
     "I say ______ in the morning.",
-    "A. Good night",
-    "B. Good morning ✅",
-    "C. Bye",
-    "D. Thanks",
     "Submit Answer 2",
     "🎉 Perfect! 'Good morning' is the right greeting for mornings!",
     "❌ Not quite right. Think about what time of day it is.",
     "📖 Reading Practice",
     "📖 Read and Repeat",
-    "Hi! I am Rahul.",
     "🎤 Practice Speaking",
     "🎤 Say: 'Hi! I am Rahul.' Practice makes perfect!",
     "🙋 Lesson 2: Introducing Yourself",
@@ -326,35 +311,19 @@ EXERCISE_STRINGS = [
     "🧠 MCQ Quiz 3: Pick the Right Introduction",
     "Question 3:",
     "Which picture shows a girl saying her name?",
-    "A. Writing on board",
-    "B. Sleeping",
-    "C. Saying hello ✅",
-    "D. Running",
     "Submit Answer 3",
     "🎉 Excellent! Saying hello is a great way to introduce yourself!",
     "❌ Think about what people do when they first meet.",
     "✍️ Fill the Gap Exercise",
     "Question 4:",
     "My name ______ Tina.",
-    "A. are",
-    "B. is ✅",
-    "C. am",
-    "D. be",
     "Submit Answer 4",
     "🎉 Perfect! 'My name is Tina' is grammatically correct!",
     "❌ Remember: 'My name is...' uses 'is' not 'are' or 'am'.",
     "🔗 Matching Exercise",
     "Match the following:",
     "Sentences:",
-    "I am Tina",
-    "I am 6 years old",
-    "I study in Class 2",
-    "I live in Delhi",
     "Types:",
-    "Name",
-    "Age",
-    "School class",
-    "Location",
     "Practice matching:",
     "What type is 'I am Tina'?",
     "Select...",
@@ -372,6 +341,66 @@ EXERCISE_STRINGS = [
     "🔄 Reset Progress",
     "Progress reset! Start fresh with your learning journey!",
 ]
+
+# English learning content that should NEVER be translated
+ENGLISH_LEARNING_CONTENT = {
+    # Greetings and basic phrases
+    "Hello": "Hello",
+    "Hi": "Hi", 
+    "Good morning": "Good morning",
+    "Good afternoon": "Good afternoon",
+    "Good evening": "Good evening",
+    "Good night": "Good night",
+    "Bye": "Bye",
+    "Thanks": "Thanks",
+    "Thank you": "Thank you",
+    
+    # Introduction phrases
+    "My name is": "My name is",
+    "I am": "I am",
+    "I live in": "I live in",
+    "I study in": "I study in",
+    "I am 6 years old": "I am 6 years old",
+    "I am Tina": "I am Tina",
+    "I am Rahul": "I am Rahul",
+    
+    # MCQ options (keep English for learning)
+    "A. Waving goodbye": "A. Waving goodbye",
+    "B. Shaking hands ✅": "B. Shaking hands ✅",
+    "C. Sleeping": "C. Sleeping", 
+    "D. Eating food": "D. Eating food",
+    "A. Good night": "A. Good night",
+    "B. Good morning ✅": "B. Good morning ✅",
+    "C. Bye": "C. Bye",
+    "D. Thanks": "D. Thanks",
+    "A. Writing on board": "A. Writing on board",
+    "B. Sleeping": "B. Sleeping",
+    "C. Saying hello ✅": "C. Saying hello ✅",
+    "D. Running": "D. Running",
+    "A. are": "A. are",
+    "B. is ✅": "B. is ✅",
+    "C. am": "C. am",
+    "D. be": "D. be",
+    
+    # Exercise content
+    "Good morning, teacher.": "Good morning, teacher.",
+    "Good / morning / teacher": "Good / morning / teacher",
+    "Good": "Good",
+    "Morning": "Morning",
+    "Afternoon": "Afternoon",
+    "Evening": "Evening", 
+    "Night": "Night",
+    "I say ______ in the morning.": "I say ______ in the morning.",
+    "My name ______ Tina.": "My name ______ Tina.",
+    "I am Tina": "I am Tina",
+    "I am 6 years old": "I am 6 years old",
+    "I study in Class 2": "I study in Class 2",
+    "I live in Delhi": "I live in Delhi",
+    "Name": "Name",
+    "Age": "Age",
+    "School class": "School class",
+    "Location": "Location",
+}
 
 @st.cache_data(show_spinner=False)
 def get_exercise_translations(lang_code: str):
@@ -496,11 +525,20 @@ st.write(copy["intro_paragraph"])  # intro paragraph
 
 # Localizer for exercise strings with batched cache then per-snippet fallback
 _ex_map = get_exercise_translations(selected_lang_code)
+# Smart localizer that preserves English learning content
 def t(s: str) -> str:
     if selected_lang_code == "eng_Latn":
         return s
+    
+    # First check if this is English learning content that should stay in English
+    if s in ENGLISH_LEARNING_CONTENT:
+        return ENGLISH_LEARNING_CONTENT[s]
+    
+    # Then check the batched translations for UI instructions
     if s in _ex_map:
         return _ex_map[s]
+    
+    # Finally fall back to per-snippet translation for anything else
     return translate_snippet(s, selected_lang_code)
 
 colA, colB = st.columns(2)
@@ -577,17 +615,16 @@ with lesson_tab1:
     # Practice Section
     with st.expander(t("🎯 Practice Exercises"), expanded=True):
         st.markdown("**" + t("🔠 Build the Greeting!") + "**")
-        st.markdown(t("👉 Sentence: Good morning, teacher."))
-        st.markdown(t("Words: Good / morning / teacher"))
+        st.markdown("👉 Sentence: Good morning, teacher.")
+        st.markdown("Words: Good / morning / teacher")
         
         # Word building exercise
         st.markdown("**" + t("Build your own greeting:") + "**")
         base_parts = ["Good", "Morning", "Hello", "Hi", "Afternoon", "Evening", "Night"]
-        translated_parts = [t(p) for p in base_parts]
         greeting_parts = st.multiselect(
             t("Choose greeting parts:"),
-            translated_parts,
-            default=[t("Good"), t("Morning")]
+            base_parts,
+            default=["Good", "Morning"]
         )
         if greeting_parts:
             st.success(t("Your greeting: ") + " ".join(greeting_parts) + "!")
@@ -596,14 +633,13 @@ with lesson_tab1:
     with st.expander(t("🧠 MCQ Quiz 1: Spot the Right Greeting"), expanded=True):
         st.markdown("**" + t("Question 1:") + "** " + t("Which picture shows two people shaking hands?"))
         
-        # Radio button for MCQ
-        mcq1_options_en = [
+        # Radio button for MCQ - keep English options for learning
+        mcq1_options = [
             "A. Waving goodbye",
             "B. Shaking hands ✅",
             "C. Sleeping",
             "D. Eating food",
         ]
-        mcq1_options = [t(opt) for opt in mcq1_options_en]
         answer1 = st.radio(
             t("Select the correct answer:"),
             mcq1_options,
@@ -621,13 +657,12 @@ with lesson_tab1:
     with st.expander(t("🧠 MCQ Quiz 2: Complete the Sentence"), expanded=True):
         st.markdown("**" + t("Question 2:") + "** " + t("I say ______ in the morning."))
         
-        mcq2_options_en = [
+        mcq2_options = [
             "A. Good night",
             "B. Good morning ✅",
             "C. Bye",
             "D. Thanks",
         ]
-        mcq2_options = [t(opt) for opt in mcq2_options_en]
         answer2 = st.radio(
             t("Select the correct answer:"),
             mcq2_options,
@@ -644,7 +679,7 @@ with lesson_tab1:
     # Reading Practice
     with st.expander(t("📖 Reading Practice"), expanded=True):
         st.markdown("**" + t("📖 Read and Repeat") + "**")
-        st.markdown(t("Hi! I am Rahul."))
+        st.markdown("Hi! I am Rahul.")
         
         # Practice button
         if st.button(t("🎤 Practice Speaking"), key="speak_practice1"):
@@ -672,13 +707,12 @@ with lesson_tab2:
     with st.expander(t("🧠 MCQ Quiz 3: Pick the Right Introduction"), expanded=True):
         st.markdown("**" + t("Question 3:") + "** " + t("Which picture shows a girl saying her name?"))
         
-        mcq3_options_en = [
+        mcq3_options = [
             "A. Writing on board",
             "B. Sleeping",
             "C. Saying hello ✅",
             "D. Running",
         ]
-        mcq3_options = [t(opt) for opt in mcq3_options_en]
         answer3 = st.radio(
             t("Select the correct answer:"),
             mcq3_options,
@@ -696,13 +730,12 @@ with lesson_tab2:
     with st.expander(t("✍️ Fill the Gap Exercise"), expanded=True):
         st.markdown("**" + t("Question 4:") + "** " + t("My name ______ Tina."))
         
-        mcq4_options_en = [
+        mcq4_options = [
             "A. are",
             "B. is ✅",
             "C. am",
             "D. be",
         ]
-        mcq4_options = [t(opt) for opt in mcq4_options_en]
         answer4 = st.radio(
             t("Select the correct answer:"),
             mcq4_options,
@@ -724,26 +757,26 @@ with lesson_tab2:
         col1, col2 = st.columns(2)
         with col1:
             st.markdown("**" + t("Sentences:") + "**")
-            st.markdown("• " + t("I am Tina"))
-            st.markdown("• " + t("I am 6 years old"))
-            st.markdown("• " + t("I study in Class 2"))
-            st.markdown("• " + t("I live in Delhi"))
+            st.markdown("• I am Tina")
+            st.markdown("• I am 6 years old")
+            st.markdown("• I study in Class 2")
+            st.markdown("• I live in Delhi")
         
         with col2:
             st.markdown("**" + t("Types:") + "**")
-            st.markdown("• " + t("Name"))
-            st.markdown("• " + t("Age"))
-            st.markdown("• " + t("School class"))
-            st.markdown("• " + t("Location"))
+            st.markdown("• Name")
+            st.markdown("• Age")
+            st.markdown("• School class")
+            st.markdown("• Location")
         
         # Interactive matching
         st.markdown("**" + t("Practice matching:") + "**")
-        select_options = [t("Select..."), t("Name"), t("Age"), t("School class"), t("Location")]
+        select_options = [t("Select..."), "Name", "Age", "School class", "Location"]
         sentence_type = st.selectbox(
             t("What type is 'I am Tina'?"),
             select_options
         )
-        if sentence_type == t("Name"):
+        if sentence_type == "Name":
             st.success(t("🎉 Correct! 'I am Tina' tells us the person's name."))
         elif sentence_type != t("Select..."):
             st.error(t("❌ Try again! Think about what information 'I am Tina' gives us."))
