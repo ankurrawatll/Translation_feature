@@ -61,6 +61,58 @@ h1, .stTitle { letter-spacing: 0.2px; }
 /* Chips */
 .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
 .chip { padding: 6px 10px; border-radius: 999px; background: #eef2ff; border: 1px solid #c7d2fe; color: #1f2937; font-size: 0.95rem; }
+
+/* Exercise content styling */
+.exercise-section { 
+  background: #f8fafc; 
+  border: 1px solid #e2e8f0; 
+  border-radius: 16px; 
+  padding: 20px; 
+  margin: 20px 0; 
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.exercise-title { 
+  color: #1e40af; 
+  font-size: 1.5rem; 
+  font-weight: 700; 
+  margin-bottom: 16px; 
+  text-align: center;
+}
+.lesson-card { 
+  background: white; 
+  border: 1px solid #e5e7eb; 
+  border-radius: 12px; 
+  padding: 16px; 
+  margin: 12px 0; 
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+.lesson-header { 
+  color: #059669; 
+  font-weight: 600; 
+  font-size: 1.1rem; 
+  margin-bottom: 8px;
+}
+.exercise-item { 
+  background: #fef3c7; 
+  border-left: 4px solid #f59e0b; 
+  padding: 12px; 
+  margin: 8px 0; 
+  border-radius: 0 8px 8px 0;
+}
+.exercise-question { 
+  background: #dbeafe; 
+  border-left: 4px solid #3b82f6; 
+  padding: 12px; 
+  margin: 8px 0; 
+  border-radius: 0 8px 8px 0;
+}
+.exercise-answer { 
+  background: #dcfce7; 
+  border-left: 4px solid #16a34a; 
+  padding: 12px; 
+  margin: 8px 0; 
+  border-radius: 0 8px 8px 0;
+}
 </style>
 """,
     unsafe_allow_html=True,
@@ -283,6 +335,149 @@ chips_html = "<div class='chips'>" + "".join([
     f"<div class='chip'>{escape(LANGUAGES[c])}</div>" for c in LANGUAGES
 ]) + "</div>"
 st.markdown(chips_html, unsafe_allow_html=True)
+
+# ---------------- EXERCISE CONTENT SECTION ---------------- #
+st.markdown(
+    """
+    <div class='exercise-section'>
+        <div class='exercise-title'>📚 SpeakGenie English Learning Exercises</div>
+        
+        <div class='lesson-card'>
+            <div class='lesson-header'>👋 Lesson 1: Greetings and Hello</div>
+            <div class='exercise-item'>
+                <strong>🌟 Welcome to SpeakGenie!</strong><br>
+                "👋 Hi! I'm Genie — your English buddy!<br>
+                📚 Welcome to SpeakGenie — a fun way to learn English!<br>
+                🧠 We'll start from the basics: speaking, reading, grammar & more.<br>
+                🚀 Step by step, you'll get better every day!<br>
+                🎉 Ready to begin? Let's go!"
+            </div>
+            
+            <div class='exercise-item'>
+                <strong>👋 Let's Learn to Say Hello!</strong><br>
+                "We say 'Hello', 'Hi', 'Good morning' when we meet someone. It's polite and friendly!"
+            </div>
+            
+            <div class='exercise-item'>
+                <strong>🔠 Build the Greeting!</strong><br>
+                👉 Sentence: Good morning, teacher.<br>
+                Words: Good / morning / teacher
+            </div>
+            
+            <div class='exercise-item'>
+                <strong>🗣 Speak It Like You Mean It!</strong><br>
+                🎤 "Hello, how are you?"
+            </div>
+            
+            <div class='exercise-question'>
+                <strong>🖼 Spot the Right Greeting</strong><br>
+                Which picture shows two people shaking hands?<br>
+                A. Waving goodbye<br>
+                B. Shaking hands ✅<br>
+                C. Sleeping<br>
+                D. Eating food
+            </div>
+            
+            <div class='exercise-question'>
+                <strong>📸 Say the Right Word</strong><br>
+                Image: A boy waving his hand<br>
+                A. Hello ✅<br>
+                B. Bye<br>
+                C. Sleep<br>
+                D. Sit
+            </div>
+            
+            <div class='exercise-item'>
+                <strong>📖 Read and Repeat</strong><br>
+                "Hi! I am Rahul."
+            </div>
+            
+            <div class='exercise-item'>
+                <strong>🔗 Match the Greeting</strong><br>
+                <table style='width:100%; border-collapse: collapse;'>
+                    <tr><th style='border:1px solid #ddd; padding:8px;'>Greeting</th><th style='border:1px solid #ddd; padding:8px;'>When to Say It</th></tr>
+                    <tr><td style='border:1px solid #ddd; padding:8px;'>Good morning</td><td style='border:1px solid #ddd; padding:8px;'>In the morning</td></tr>
+                    <tr><td style='border:1px solid #ddd; padding:8px;'>Good night</td><td style='border:1px solid #ddd; padding:8px;'>Before sleeping</td></tr>
+                    <tr><td style='border:1px solid #ddd; padding:8px;'>Hello</td><td style='border:1px solid #ddd; padding:8px;'>When meeting</td></tr>
+                    <tr><td style='border:1px solid #ddd; padding:8px;'>Bye</td><td style='border:1px solid #ddd; padding:8px;'>When leaving</td></tr>
+                </table>
+            </div>
+            
+            <div class='exercise-question'>
+                <strong>🧠 Complete the Sentence</strong><br>
+                "I say ______ in the morning."<br>
+                A. Good night<br>
+                B. Good morning ✅<br>
+                C. Bye<br>
+                D. Thanks
+            </div>
+        </div>
+        
+        <div class='lesson-card'>
+            <div class='lesson-header'>🙋 Lesson 2: Introducing Yourself</div>
+            <div class='exercise-item'>
+                <strong>🙋 Tell Me About You!</strong><br>
+                "We use 'My name is...', 'I am...' to introduce ourselves to others."
+            </div>
+            
+            <div class='exercise-item'>
+                <strong>🔤 Make Your Introduction</strong><br>
+                👉 Sentence: My name is Asha.<br>
+                Words: My / name / is / Asha
+            </div>
+            
+            <div class='exercise-item'>
+                <strong>🎙 Speak It Out</strong><br>
+                🎤 "I am Rahul."
+            </div>
+            
+            <div class='exercise-question'>
+                <strong>🖼 Pick the Right Introduction</strong><br>
+                Which picture shows a girl saying her name?<br>
+                A. Writing on board<br>
+                B. Sleeping<br>
+                C. Saying hello ✅<br>
+                D. Running
+            </div>
+            
+            <div class='exercise-question'>
+                <strong>Identify the Action</strong><br>
+                Image: A boy introducing himself<br>
+                A. Sorry<br>
+                B. Thanks<br>
+                C. Hello<br>
+                D. Good night
+            </div>
+            
+            <div class='exercise-item'>
+                <strong>📖 Let's Read Together</strong><br>
+                "My name is Seema."
+            </div>
+            
+            <div class='exercise-item'>
+                <strong>Match the following</strong><br>
+                <table style='width:100%; border-collapse: collapse;'>
+                    <tr><th style='border:1px solid #ddd; padding:8px;'>Sentence</th><th style='border:1px solid #ddd; padding:8px;'>Type</th></tr>
+                    <tr><td style='border:1px solid #ddd; padding:8px;'>I am Tina</td><td style='border:1px solid #ddd; padding:8px;'>Name</td></tr>
+                    <tr><td style='border:1px solid #ddd; padding:8px;'>I am 6 years old</td><td style='border:1px solid #ddd; padding:8px;'>Age</td></tr>
+                    <tr><td style='border:1px solid #ddd; padding:8px;'>I study in Class 2</td><td style='border:1px solid #ddd; padding:8px;'>School class</td></tr>
+                    <tr><td style='border:1px solid #ddd; padding:8px;'>I live in Delhi</td><td style='border:1px solid #ddd; padding:8px;'>Location</td></tr>
+                </table>
+            </div>
+            
+            <div class='exercise-question'>
+                <strong>✍️ Fill the Gap</strong><br>
+                "My name ______ Tina."<br>
+                A. are<br>
+                B. is ✅<br>
+                C. am<br>
+                D. be
+            </div>
+        </div>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
 
 st.markdown(
     f"<div id=\"selected_lang_code\" style=\"display:none\">{selected_lang_code}</div>",
