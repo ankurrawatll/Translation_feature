@@ -2,6 +2,7 @@ import streamlit as st
 import requests
 import torch
 import json
+import re
 from html import escape
 from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
  
@@ -598,18 +599,25 @@ with lesson_tab1:
     # Learning Section
     with st.expander(t("🔤 Learn Greetings"), expanded=True):
         st.markdown("**" + t("👋 Let's Learn to Say Hello!") + "**")
-        st.markdown(t("We say 'Hello', 'Hi', 'Good morning' when we meet someone. It's polite and friendly!"))
+        # Translate sentence but preserve quoted English greeting words
+        sentence_en = "We say 'Hello', 'Hi', 'Good morning' when we meet someone. It's polite and friendly!"
+        # Force-keep quoted tokens in English by replacing them after translation if needed
+        translated_sentence = t(sentence_en)
+        # Replace any translated variants back to exact English target tokens
+        for token in ["Hello", "Hi", "Good morning"]:
+            translated_sentence = re.sub(r"[‘’']\s*" + re.escape(token) + r"\s*[‘’']", f"'{token}'", translated_sentence)
+        st.markdown(translated_sentence)
         
         # Interactive greeting buttons
         col1, col2, col3 = st.columns(3)
         with col1:
-            if st.button(t("👋 Hello"), key="hello_btn"):
+            if st.button("👋 Hello", key="hello_btn"):
                 st.info(t("Hello! How are you today?"))
         with col2:
-            if st.button(t("🌅 Good Morning"), key="morning_btn"):
+            if st.button("🌅 Good Morning", key="morning_btn"):
                 st.info(t("Good morning! Have a wonderful day!"))
         with col3:
-            if st.button(t("👋 Hi"), key="hi_btn"):
+            if st.button("👋 Hi", key="hi_btn"):
                 st.info(t("Hi there! Nice to meet you!"))
 
     # Practice Section
