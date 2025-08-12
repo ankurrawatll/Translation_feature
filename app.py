@@ -209,7 +209,11 @@ def translate(text, src_lang, tgt_lang):
         "- Do not add quotes or explanations.\n\n"
         f"Text: {text}"
     )
-    return gemini_chat(prompt)
+    result = gemini_chat(prompt)
+    # Graceful fallback on errors (e.g., 429 quota)
+    if isinstance(result, str) and result.startswith("Error "):
+        return text
+    return result
 
 # ---------------- GEMINI API CALL ---------------- #
 def gemini_chat(prompt):
@@ -226,7 +230,172 @@ def gemini_chat(prompt):
         except:
             return "Error: Unexpected Gemini response format."
     else:
+        # Special handling for rate limit to keep UI clean
+        if response.status_code == 429:
+            try:
+                data = response.json()
+                # Try to extract suggested retry delay
+                details = data.get("error", {}).get("details", [])
+                retry_s = None
+                for d in details:
+                    if d.get("@type", "").endswith("RetryInfo"):
+                        retry_s = d.get("retryDelay")
+                        break
+                if retry_s:
+                    return f"Error 429: Rate limit reached. Please wait {retry_s} and try again."
+            except Exception:
+                pass
         return f"Error {response.status_code}: {response.text}"
+
+# Predeclare all exercise phrases to batch-translate in one request
+EXERCISE_STRINGS = [
+    "📚 SpeakGenie English Learning Exercises",
+    "👋 Lesson 1: Greetings",
+    "🙋 Lesson 2: Introduction",
+    "📊 Progress",
+    "👋 Lesson 1: Greetings and Hello",
+    "🌟 Welcome to SpeakGenie!",
+    "👋 Hi! I'm Genie — your English buddy!",
+    "📚 Welcome to SpeakGenie — a fun way to learn English!",
+    "🧠 We'll start from the basics: speaking, reading, grammar & more.",
+    "🚀 Step by step, you'll get better every day!",
+    "🎯 Start Lesson",
+    "Lesson 1 started! Let's begin learning greetings!",
+    "🔤 Learn Greetings",
+    "👋 Let's Learn to Say Hello!",
+    "We say 'Hello', 'Hi', 'Good morning' when we meet someone. It's polite and friendly!",
+    "👋 Hello",
+    "Hello! How are you today?",
+    "🌅 Good Morning",
+    "Good morning! Have a wonderful day!",
+    "👋 Hi",
+    "Hi there! Nice to meet you!",
+    "🎯 Practice Exercises",
+    "🔠 Build the Greeting!",
+    "👉 Sentence: Good morning, teacher.",
+    "Words: Good / morning / teacher",
+    "Build your own greeting:",
+    "Choose greeting parts:",
+    "Good",
+    "Morning",
+    "Hello",
+    "Hi",
+    "Afternoon",
+    "Evening",
+    "Night",
+    "Your greeting: ",
+    "🧠 MCQ Quiz 1: Spot the Right Greeting",
+    "Question 1:",
+    "Which picture shows two people shaking hands?",
+    "Select the correct answer:",
+    "A. Waving goodbye",
+    "B. Shaking hands ✅",
+    "C. Sleeping",
+    "D. Eating food",
+    "Submit Answer 1",
+    "🎉 Correct! Shaking hands is a friendly greeting!",
+    "❌ Try again! Think about what people do when they meet.",
+    "🧠 MCQ Quiz 2: Complete the Sentence",
+    "Question 2:",
+    "I say ______ in the morning.",
+    "A. Good night",
+    "B. Good morning ✅",
+    "C. Bye",
+    "D. Thanks",
+    "Submit Answer 2",
+    "🎉 Perfect! 'Good morning' is the right greeting for mornings!",
+    "❌ Not quite right. Think about what time of day it is.",
+    "📖 Reading Practice",
+    "📖 Read and Repeat",
+    "Hi! I am Rahul.",
+    "🎤 Practice Speaking",
+    "🎤 Say: 'Hi! I am Rahul.' Practice makes perfect!",
+    "🙋 Lesson 2: Introducing Yourself",
+    "🙋 Learn to Introduce Yourself",
+    "🙋 Tell Me About You!",
+    "We use 'My name is...', 'I am...' to introduce ourselves to others.",
+    "Practice your introduction:",
+    "What's your name?",
+    "Enter your name",
+    "How old are you?",
+    ". I am ",
+    " years old. I live in ",
+    "Where do you live?",
+    "Enter your city",
+    "👋 Hi! My name is ",
+    "🧠 MCQ Quiz 3: Pick the Right Introduction",
+    "Question 3:",
+    "Which picture shows a girl saying her name?",
+    "A. Writing on board",
+    "B. Sleeping",
+    "C. Saying hello ✅",
+    "D. Running",
+    "Submit Answer 3",
+    "🎉 Excellent! Saying hello is a great way to introduce yourself!",
+    "❌ Think about what people do when they first meet.",
+    "✍️ Fill the Gap Exercise",
+    "Question 4:",
+    "My name ______ Tina.",
+    "A. are",
+    "B. is ✅",
+    "C. am",
+    "D. be",
+    "Submit Answer 4",
+    "🎉 Perfect! 'My name is Tina' is grammatically correct!",
+    "❌ Remember: 'My name is...' uses 'is' not 'are' or 'am'.",
+    "🔗 Matching Exercise",
+    "Match the following:",
+    "Sentences:",
+    "I am Tina",
+    "I am 6 years old",
+    "I study in Class 2",
+    "I live in Delhi",
+    "Types:",
+    "Name",
+    "Age",
+    "School class",
+    "Location",
+    "Practice matching:",
+    "What type is 'I am Tina'?",
+    "Select...",
+    "🎉 Correct! 'I am Tina' tells us the person's name.",
+    "❌ Try again! Think about what information 'I am Tina' gives us.",
+    "📊 Your Learning Progress",
+    "Lesson 1: Greetings",
+    "Score:",
+    "Lesson 2: Introduction",
+    "Total Score:",
+    "🏆 Congratulations! You've completed all exercises perfectly!",
+    "🌟 Great job! You're doing really well!",
+    "📚 Keep practicing! You're making progress!",
+    "🎯 Ready to start learning? Begin with Lesson 1!",
+    "🔄 Reset Progress",
+    "Progress reset! Start fresh with your learning journey!",
+]
+
+@st.cache_data(show_spinner=False)
+def get_exercise_translations(lang_code: str):
+    if lang_code == "eng_Latn":
+        return {}
+    target_name = LANGUAGES.get(lang_code, lang_code)
+    # Build one prompt with all phrases in order, pipe-separated response
+    numbered = "\n".join([f"{i+1}. {s}" for i, s in enumerate(EXERCISE_STRINGS)])
+    prompt = (
+        f"Translate the following UI phrases from English to {target_name} ({lang_code}). "
+        "Preserve emojis and option letters (A., B., C., D.) if present. "
+        "Return only the translated phrases joined by ' || ' in the same order. Do not add extra text.\n\n"
+        f"{numbered}"
+    )
+    raw = str(gemini_chat(prompt))
+    # If API error, return empty so we fall back to English via per-snippet translate fallback
+    if raw.startswith("Error "):
+        return {}
+    parts = [p.strip() for p in raw.split("||")]
+    mapping = {}
+    for i, s in enumerate(EXERCISE_STRINGS):
+        if i < len(parts) and parts[i]:
+            mapping[s] = parts[i]
+    return mapping
 
 # ---------------- DESCRIPTIVE COPY (intro/purpose/tips) ---------------- #
 @st.cache_data(show_spinner=False)
@@ -325,8 +494,14 @@ copy = get_copy_texts(selected_lang_code)
 st.caption(copy["hero_subtitle"])  # small subtitle under the title
 st.write(copy["intro_paragraph"])  # intro paragraph
 
-# Localizer for exercise strings
-t = lambda s: translate_snippet(s, selected_lang_code)
+# Localizer for exercise strings with batched cache then per-snippet fallback
+_ex_map = get_exercise_translations(selected_lang_code)
+def t(s: str) -> str:
+    if selected_lang_code == "eng_Latn":
+        return s
+    if s in _ex_map:
+        return _ex_map[s]
+    return translate_snippet(s, selected_lang_code)
 
 colA, colB = st.columns(2)
 with colA:
